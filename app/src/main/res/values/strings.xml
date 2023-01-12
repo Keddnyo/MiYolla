@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">MiYolla</string>
+
+    <string name="feed_card_icon">Feed card icon</string>
+    <string name="additional_tag_nfc" translatable="false">NFC</string>
+</resources>
