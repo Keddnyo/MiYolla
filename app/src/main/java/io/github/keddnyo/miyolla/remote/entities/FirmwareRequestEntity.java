@@ -8,15 +8,15 @@ public class FirmwareRequestEntity {
     public final int deviceSource;
     public final int productionSource;
     public final ApplicationEntity application;
-    public final boolean hasNFC;
+    public final int tag;
 
-    public FirmwareRequestEntity(String deviceName, int deviceIcon, int deviceSource, int productionSource, ApplicationEntity application, boolean hasNFC) {
+    public FirmwareRequestEntity(String deviceName, int deviceIcon, int deviceSource, int productionSource, ApplicationEntity application, int tag) {
         this.deviceName = deviceName;
         this.deviceIcon = deviceIcon;
         this.deviceSource = deviceSource;
         this.productionSource = productionSource;
         this.application = application;
-        this.hasNFC = hasNFC;
+        this.tag = tag;
     }
 }
 

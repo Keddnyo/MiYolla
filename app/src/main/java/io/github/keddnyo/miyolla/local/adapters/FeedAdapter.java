@@ -44,13 +44,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         holder.feedIcon.setImageResource(feedEntity.source.deviceIcon);
         holder.title.setText(feedEntity.source.deviceName);
         holder.subtitle.setText(feedEntity.remote.firmwareVersion);
-
-        if (feedEntity.source.hasNFC) {
-            holder.additionalTag.setText(holder.additionalTag.getContext().getString(R.string.additional_tag_nfc));
-        } else {
-            holder.additionalTag.clearComposingText(); // TODO: Maybe replace later!
-        }
-
+        holder.additionalTag.setText(feedEntity.source.tag);
     }
 
     @Override

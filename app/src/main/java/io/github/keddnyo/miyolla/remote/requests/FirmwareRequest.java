@@ -1,5 +1,6 @@
 package io.github.keddnyo.miyolla.remote.requests;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.json.JSONObject;
@@ -16,6 +17,7 @@ import io.github.keddnyo.miyolla.local.adapters.FeedAdapter;
 import io.github.keddnyo.miyolla.local.entities.FeedEntity;
 import io.github.keddnyo.miyolla.remote.entities.FirmwareRequestEntity;
 import io.github.keddnyo.miyolla.remote.entities.FirmwareResponseEntity;
+import io.github.keddnyo.miyolla.remote.entities.language.Language;
 import io.github.keddnyo.miyolla.remote.repository.WearDeviceRepository;
 import io.github.keddnyo.miyolla.remote.utils.AsyncTask;
 
@@ -28,7 +30,7 @@ public class FirmwareRequest extends WearDeviceRepository implements AsyncTask {
     }
 
     @Nullable
-    private FirmwareResponseEntity getFirmware(FirmwareRequestEntity requestEntity, String language) throws MalformedURLException {
+    private FirmwareResponseEntity getFirmware(@NonNull FirmwareRequestEntity requestEntity, String language) throws MalformedURLException {
 
         String urlBuilder = "https://" + "api-mifit-us2.huami.com" + "/devices/ALL/hasNewVersion?" + "deviceSource=" + requestEntity.deviceSource + "&" + "productionSource=" + requestEntity.productionSource + "&" + "appVersion=" + requestEntity.application.appVersion + "&" + "firmwareVersion=0&" + "resourceVersion=0&" + "baseResourceVersion=0&" + "gpsVersion=0&" + "fontVersion=0&" + "deviceType=ALL&" + "userId=0&" + "support8Bytes=true&";
 
@@ -90,20 +92,18 @@ public class FirmwareRequest extends WearDeviceRepository implements AsyncTask {
         executorService.execute(() -> {
 
             ArrayList<String> languageList = new ArrayList<>();
-            languageList.add("en_US");
-            languageList.add("zh_CH");
+            languageList.add(Language.ENGLISH.code);
+            languageList.add(Language.CHINESE.code);
 
-            ArrayList<FirmwareRequestEntity> source = initDeviceList();
+            ArrayList<FirmwareRequestEntity> sourceList = initDeviceList();
 
-            for (int i = 0; i < source.size(); i++) {
+            for (int i = 0; i < sourceList.size(); i++) {
                 for (int l = 0; l < languageList.size(); l++) {
                     try {
-                        FirmwareResponseEntity response = getFirmware(source.get(i), languageList.get(l));
+                        FirmwareResponseEntity response = getFirmware(sourceList.get(i), languageList.get(l));
                         if (response != null) {
-                            int finalI = i;
-                            handler.post(() -> adapter.addItem(new FeedEntity(
-                                    source.get(finalI), response
-                            )));
+                            int source = i;
+                            handler.post(() -> adapter.addItem(new FeedEntity(sourceList.get(source), response)));
                             break;
                         }
                     } catch (MalformedURLException e) {
@@ -115,6 +115,7 @@ public class FirmwareRequest extends WearDeviceRepository implements AsyncTask {
 
     }
 
+    @Nullable
     private String getStringOrNull(JSONObject jsonObject, String value) {
         try {
             if (jsonObject.has(value)) {

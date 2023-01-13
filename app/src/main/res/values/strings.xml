@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">MiYolla</string>
-
     <string name="feed_card_icon">Feed card icon</string>
-    <string name="additional_tag_nfc" translatable="false">NFC</string>
+
+    <string name="tag_empty" translatable="false" />
+    <string name="tag_global" translatable="false">Global</string>
+    <string name="tag_limited" translatable="false">Limited</string>
+    <string name="tag_nfc" translatable="false">NFC</string>
 </resources>
