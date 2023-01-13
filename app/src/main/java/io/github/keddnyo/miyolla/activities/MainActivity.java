@@ -1,4 +1,4 @@
-package io.github.keddnyo.miyolla;
+package io.github.keddnyo.miyolla.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
+import io.github.keddnyo.miyolla.R;
 import io.github.keddnyo.miyolla.local.adapters.FeedAdapter;
 import io.github.keddnyo.miyolla.remote.requests.FirmwareRequest;
 

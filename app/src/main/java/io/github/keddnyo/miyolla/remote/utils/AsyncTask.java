@@ -10,7 +10,7 @@ public interface AsyncTask {
     /**
      * Creates a new thread for async task call
      */
-    ExecutorService executorService = Executors.newSingleThreadExecutor();
+    ExecutorService executorService = Executors.newCachedThreadPool();
     /**
      * Used for execute code on UI thread from another thread
      */

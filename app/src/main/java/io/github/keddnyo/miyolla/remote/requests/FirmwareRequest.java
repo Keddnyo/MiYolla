@@ -35,7 +35,7 @@ public class FirmwareRequest extends WearDeviceRepository implements AsyncTask {
     }
 
     @Nullable
-    private FirmwareResponseEntity getFirmware(@NonNull FirmwareRequestEntity requestEntity, String language) throws MalformedURLException {
+    private FirmwareResponseEntity getFirmware(@NonNull FirmwareRequestEntity requestEntity, @NonNull String language) throws MalformedURLException {
 
         String urlBuilder = "https://" + "api-mifit-us2.huami.com" + "/devices/ALL/hasNewVersion?" + "deviceSource=" + requestEntity.deviceSource + "&" + "productionSource=" + requestEntity.productionSource + "&" + "appVersion=" + requestEntity.application.appVersion + "&" + "firmwareVersion=0&" + "resourceVersion=0&" + "baseResourceVersion=0&" + "gpsVersion=0&" + "fontVersion=0&" + "deviceType=ALL&" + "userId=0&" + "support8Bytes=true&";
 
@@ -94,6 +94,7 @@ public class FirmwareRequest extends WearDeviceRepository implements AsyncTask {
 
     public void getFirmwareList() {
         executorService.execute(() -> {
+
             ArrayList<String> languageList = new ArrayList<>();
             languageList.add(Language.ENGLISH.code);
             languageList.add(Language.CHINESE.code);

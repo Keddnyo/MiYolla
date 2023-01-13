@@ -60,7 +60,7 @@ public class WearDeviceRepository {
         firmwareRequestEntities.add(new FirmwareRequestEntity("Amazfit GTR 47", R.drawable.amazfit_gtr, 35, 256, Application.ZEPP, R.string.tag_empty));
         firmwareRequestEntities.add(new FirmwareRequestEntity("Amazfit GTR 47", R.drawable.amazfit_gtr, 36, 256, Application.ZEPP, R.string.tag_global));
         firmwareRequestEntities.add(new FirmwareRequestEntity("Amazfit GTR 47 Lite", R.drawable.amazfit_gtr, 46, 258, Application.ZEPP, R.string.tag_global));
-        firmwareRequestEntities.add(new FirmwareRequestEntity("Amazfit GTR 2 New", R.drawable.amazfit_gtr_2, 244, 258, Application.ZEPP, R.string.tag_empty));
+        firmwareRequestEntities.add(new FirmwareRequestEntity("Amazfit GTR 2", R.drawable.amazfit_gtr_2, 244, 258, Application.ZEPP, R.string.tag_new));
         firmwareRequestEntities.add(new FirmwareRequestEntity("Amazfit GTR 2", R.drawable.amazfit_gtr_2, 63, 256, Application.ZEPP, R.string.tag_empty));
         firmwareRequestEntities.add(new FirmwareRequestEntity("Amazfit GTR 2", R.drawable.amazfit_gtr_2, 64, 257, Application.ZEPP, R.string.tag_global));
         firmwareRequestEntities.add(new FirmwareRequestEntity("Amazfit GTR 2e", R.drawable.amazfit_gtr_2e, 206, 256, Application.ZEPP, R.string.tag_empty));
