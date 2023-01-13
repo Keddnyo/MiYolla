@@ -22,13 +22,10 @@ import io.github.keddnyo.miyolla.remote.repository.WearDeviceRepository;
 import io.github.keddnyo.miyolla.remote.utils.AsyncTask;
 
 public class FirmwareRequest extends WearDeviceRepository implements AsyncTask {
-
     final FeedAdapter adapter;
-
     public FirmwareRequest(FeedAdapter adapter) {
         this.adapter = adapter;
     }
-
     @Nullable
     private FirmwareResponseEntity getFirmware(@NonNull FirmwareRequestEntity requestEntity, String language) throws MalformedURLException {
 
@@ -88,9 +85,7 @@ public class FirmwareRequest extends WearDeviceRepository implements AsyncTask {
     }
 
     public void getFirmwareList() {
-
         executorService.execute(() -> {
-
             ArrayList<String> languageList = new ArrayList<>();
             languageList.add(Language.ENGLISH.code);
             languageList.add(Language.CHINESE.code);
@@ -112,7 +107,6 @@ public class FirmwareRequest extends WearDeviceRepository implements AsyncTask {
                 }
             }
         });
-
     }
 
     @Nullable

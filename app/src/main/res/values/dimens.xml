@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="corner_radius">10dp</dimen>
-    <dimen name="content_padding">10dp</dimen>
+    <dimen name="content_padding">15dp</dimen>
     <dimen name="feed_max_width">576dp</dimen>
 </resources>
