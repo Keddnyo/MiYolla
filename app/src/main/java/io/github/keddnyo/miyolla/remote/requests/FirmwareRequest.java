@@ -1,7 +1,11 @@
 package io.github.keddnyo.miyolla.remote.requests;
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import org.json.JSONObject;
 
@@ -23,9 +27,13 @@ import io.github.keddnyo.miyolla.remote.utils.AsyncTask;
 
 public class FirmwareRequest extends WearDeviceRepository implements AsyncTask {
     final FeedAdapter adapter;
-    public FirmwareRequest(FeedAdapter adapter) {
+    final LinearProgressIndicator progressBar;
+
+    public FirmwareRequest(FeedAdapter adapter, LinearProgressIndicator progressBar) {
         this.adapter = adapter;
+        this.progressBar = progressBar;
     }
+
     @Nullable
     private FirmwareResponseEntity getFirmware(@NonNull FirmwareRequestEntity requestEntity, String language) throws MalformedURLException {
 
@@ -92,13 +100,19 @@ public class FirmwareRequest extends WearDeviceRepository implements AsyncTask {
 
             ArrayList<FirmwareRequestEntity> sourceList = initDeviceList();
 
+            progressBar.setMax(sourceList.size());
+
             for (int i = 0; i < sourceList.size(); i++) {
                 for (int l = 0; l < languageList.size(); l++) {
                     try {
                         FirmwareResponseEntity response = getFirmware(sourceList.get(i), languageList.get(l));
                         if (response != null) {
                             int source = i;
-                            handler.post(() -> adapter.addItem(new FeedEntity(sourceList.get(source), response)));
+                            handler.post(() -> {
+                                adapter.addItem(new FeedEntity(sourceList.get(source), response));
+                                progressBar.setProgress(source);
+                                if (source + 1 == sourceList.size()) progressBar.setVisibility(View.GONE);
+                            });
                             break;
                         }
                     } catch (MalformedURLException e) {

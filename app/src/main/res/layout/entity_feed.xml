@@ -18,7 +18,7 @@
         app:layout_constraintWidth_max="@dimen/feed_max_width">
 
         <TextView
-            android:id="@+id/feed_additional_tag"
+            android:id="@+id/feedAdditionalTag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/feed_icon"
+                android:id="@+id/feedIcon"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:contentDescription="@string/feed_card_icon"
@@ -44,18 +44,18 @@
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/feed_icon"
+                app:layout_constraintStart_toEndOf="@+id/feedIcon"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/feed_title"
+                    android:id="@+id/feedTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/feed_subtitle"
+                    android:id="@+id/feedSubtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp" />

@@ -24,10 +24,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
         public FeedViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.feedIcon = itemView.findViewById(R.id.feed_icon);
-            this.title = itemView.findViewById(R.id.feed_title);
-            this.subtitle = itemView.findViewById(R.id.feed_subtitle);
-            this.additionalTag = itemView.findViewById(R.id.feed_additional_tag);
+            this.feedIcon = itemView.findViewById(R.id.feedIcon);
+            this.title = itemView.findViewById(R.id.feedTitle);
+            this.subtitle = itemView.findViewById(R.id.feedSubtitle);
+            this.additionalTag = itemView.findViewById(R.id.feedAdditionalTag);
         }
     }
 
