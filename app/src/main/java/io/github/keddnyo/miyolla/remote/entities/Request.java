@@ -1,16 +1,14 @@
 package io.github.keddnyo.miyolla.remote.entities;
 
-import io.github.keddnyo.miyolla.remote.entities.application.ApplicationEntity;
-
-public class FirmwareRequestEntity {
+public class Request {
     public final String deviceName;
     public final int deviceIcon;
     public final int deviceSource;
     public final int productionSource;
-    public final ApplicationEntity application;
+    public final Application application;
     public final int tag;
 
-    public FirmwareRequestEntity(String deviceName, int deviceIcon, int deviceSource, int productionSource, ApplicationEntity application, int tag) {
+    public Request(String deviceName, int deviceIcon, int deviceSource, int productionSource, Application application, int tag) {
         this.deviceName = deviceName;
         this.deviceIcon = deviceIcon;
         this.deviceSource = deviceSource;

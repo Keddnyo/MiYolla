@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import io.github.keddnyo.miyolla.R;
-import io.github.keddnyo.miyolla.local.entities.FeedEntity;
+import io.github.keddnyo.miyolla.local.entities.Feed;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder> {
 
-    final ArrayList<FeedEntity> feedEntities = new ArrayList<>();
+    final ArrayList<Feed> feedEntities = new ArrayList<>();
 
     public static class FeedViewHolder extends RecyclerView.ViewHolder {
         final ImageView feedIcon;
@@ -39,12 +39,12 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull FeedAdapter.FeedViewHolder holder, int position) {
-        FeedEntity feedEntity = feedEntities.get(position);
+        Feed feed = feedEntities.get(position);
 
-        holder.feedIcon.setImageResource(feedEntity.source.deviceIcon);
-        holder.title.setText(feedEntity.source.deviceName);
-        holder.subtitle.setText(feedEntity.remote.firmwareVersion);
-        holder.additionalTag.setText(feedEntity.source.tag);
+        holder.feedIcon.setImageResource(feed.request.deviceIcon);
+        holder.title.setText(feed.request.deviceName);
+        holder.subtitle.setText(feed.response.firmwareVersion);
+        holder.additionalTag.setText(feed.request.tag);
     }
 
     @Override
@@ -52,8 +52,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         return feedEntities.size();
     }
 
-    public void addItem(FeedEntity feedEntity) {
-        feedEntities.add(feedEntity);
+    public void addItem(Feed feed) {
+        feedEntities.add(feed);
         notifyItemInserted(getItemCount());
     }
 

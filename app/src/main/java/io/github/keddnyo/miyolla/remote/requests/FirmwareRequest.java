@@ -12,16 +12,15 @@ import org.json.JSONObject;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
 import io.github.keddnyo.miyolla.local.adapters.FeedAdapter;
-import io.github.keddnyo.miyolla.local.entities.FeedEntity;
-import io.github.keddnyo.miyolla.remote.entities.FirmwareRequestEntity;
-import io.github.keddnyo.miyolla.remote.entities.FirmwareResponseEntity;
-import io.github.keddnyo.miyolla.remote.entities.language.Language;
+import io.github.keddnyo.miyolla.local.entities.Feed;
+import io.github.keddnyo.miyolla.remote.entities.Response;
+import io.github.keddnyo.miyolla.remote.entities.Request;
+import io.github.keddnyo.miyolla.remote.implementations.LanguageImpl;
 import io.github.keddnyo.miyolla.remote.repository.WearDeviceRepository;
 import io.github.keddnyo.miyolla.remote.utils.AsyncTask;
 
@@ -35,7 +34,7 @@ public class FirmwareRequest extends WearDeviceRepository implements AsyncTask {
     }
 
     @Nullable
-    private FirmwareResponseEntity getFirmware(@NonNull FirmwareRequestEntity requestEntity, @NonNull String language) throws MalformedURLException {
+    private Response getFirmware(@NonNull Request requestEntity, @NonNull String language) {
 
         String urlBuilder = "https://" + "api-mifit-us2.huami.com" + "/devices/ALL/hasNewVersion?" + "deviceSource=" + requestEntity.deviceSource + "&" + "productionSource=" + requestEntity.productionSource + "&" + "appVersion=" + requestEntity.application.appVersion + "&" + "firmwareVersion=0&" + "resourceVersion=0&" + "baseResourceVersion=0&" + "gpsVersion=0&" + "fontVersion=0&" + "deviceType=ALL&" + "userId=0&" + "support8Bytes=true&";
 
@@ -83,7 +82,7 @@ public class FirmwareRequest extends WearDeviceRepository implements AsyncTask {
             if (firmwareVersion == null) {
                 return null;
             } else {
-                return new FirmwareResponseEntity(firmwareVersion, firmwareUrl, resourceVersion, resourceUrl, baseResourceVersion, baseResourceUrl, fontVersion, fontUrl, gpsVersion, gpsUrl, changelog);
+                return new Response(firmwareVersion, firmwareUrl, resourceVersion, resourceUrl, baseResourceVersion, baseResourceUrl, fontVersion, fontUrl, gpsVersion, gpsUrl, changelog);
             }
 
         } catch (Exception e) {
@@ -96,28 +95,24 @@ public class FirmwareRequest extends WearDeviceRepository implements AsyncTask {
         executorService.execute(() -> {
 
             ArrayList<String> languageList = new ArrayList<>();
-            languageList.add(Language.ENGLISH.code);
-            languageList.add(Language.CHINESE.code);
+            languageList.add(LanguageImpl.ENGLISH.code);
+            languageList.add(LanguageImpl.CHINESE.code);
 
-            ArrayList<FirmwareRequestEntity> sourceList = initDeviceList();
+            ArrayList<Request> sourceList = initDeviceList();
 
             progressBar.setMax(sourceList.size());
 
             for (int i = 0; i < sourceList.size(); i++) {
                 for (int l = 0; l < languageList.size(); l++) {
-                    try {
-                        FirmwareResponseEntity response = getFirmware(sourceList.get(i), languageList.get(l));
-                        if (response != null) {
-                            int source = i;
-                            handler.post(() -> {
-                                adapter.addItem(new FeedEntity(sourceList.get(source), response));
-                                progressBar.setProgress(source);
-                                if (source + 1 == sourceList.size()) progressBar.setVisibility(View.GONE);
-                            });
-                            break;
-                        }
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
+                    Response response = getFirmware(sourceList.get(i), languageList.get(l));
+                    if (response != null) {
+                        int source = i;
+                        handler.post(() -> {
+                            adapter.addItem(new Feed(sourceList.get(source), response));
+                            progressBar.setProgress(source);
+                            if (source + 1 == sourceList.size()) progressBar.setVisibility(View.GONE);
+                        });
+                        break;
                     }
                 }
             }
