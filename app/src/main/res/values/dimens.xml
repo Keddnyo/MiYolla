@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="cornerRadius">10dp</dimen>
-    <dimen name="contentPadding">15dp</dimen>
     <dimen name="feedMaxWidth">576dp</dimen>
     <dimen name="cardStroke">0.5dp</dimen>
-    <dimen name="tag">12sp</dimen>
+    <dimen name="cornerRadius">10dp</dimen>
+    <dimen name="contentPadding">15dp</dimen>
+    <dimen name="title">20sp</dimen>
+    <dimen name="subtitle">13sp</dimen>
 </resources>

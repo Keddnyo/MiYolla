@@ -1,6 +1,6 @@
 package io.github.keddnyo.miyolla.remote.entities;
 
-public class Request {
+public class WearDevice {
     public final String deviceName;
     public final int deviceIcon;
     public final int deviceSource;
@@ -8,7 +8,7 @@ public class Request {
     public final Application application;
     public final int tag;
 
-    public Request(String deviceName, int deviceIcon, int deviceSource, int productionSource, Application application, int tag) {
+    public WearDevice(String deviceName, int deviceIcon, int deviceSource, int productionSource, Application application, int tag) {
         this.deviceName = deviceName;
         this.deviceIcon = deviceIcon;
         this.deviceSource = deviceSource;

@@ -1,6 +1,6 @@
 package io.github.keddnyo.miyolla.remote.entities;
 
-public class Response {
+public class Firmware {
     public final String firmwareVersion;
     public final String firmwareUrl;
     public final String resourceVersion;
@@ -13,7 +13,7 @@ public class Response {
     public final String gpsUrl;
     public final String changeLog;
 
-    public Response(String firmwareVersion, String firmwareUrl, String resourceVersion, String resourceUrl, String baseResourceVersion, String baseResourceUrl, String fontVersion, String fontUrl, String gpsVersion, String gpsUrl, String changeLog) {
+    public Firmware(String firmwareVersion, String firmwareUrl, String resourceVersion, String resourceUrl, String baseResourceVersion, String baseResourceUrl, String fontVersion, String fontUrl, String gpsVersion, String gpsUrl, String changeLog) {
         this.firmwareVersion = firmwareVersion;
         this.firmwareUrl = firmwareUrl;
 

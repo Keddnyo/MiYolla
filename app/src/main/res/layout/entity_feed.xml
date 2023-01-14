@@ -5,6 +5,7 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/feedCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:cardCornerRadius="@dimen/cornerRadius"
@@ -23,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
-            android:textSize="@dimen/tag" />
+            android:textSize="@dimen/subtitle" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -33,9 +34,7 @@
                 android:id="@+id/feedIcon"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
-                android:background="@drawable/ic_circle"
                 android:contentDescription="@string/feed_card_icon"
-                android:padding="@dimen/contentPadding"
                 android:src="@drawable/zepp_e_circle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -55,14 +54,14 @@
                     android:id="@+id/feedTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/title"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/feedSubtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/subtitle" />
 
             </LinearLayout>
 

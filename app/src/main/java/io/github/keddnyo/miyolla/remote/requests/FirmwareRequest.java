@@ -7,8 +7,10 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -18,8 +20,8 @@ import java.util.ArrayList;
 
 import io.github.keddnyo.miyolla.local.adapters.FeedAdapter;
 import io.github.keddnyo.miyolla.local.entities.Feed;
-import io.github.keddnyo.miyolla.remote.entities.Response;
-import io.github.keddnyo.miyolla.remote.entities.Request;
+import io.github.keddnyo.miyolla.remote.entities.Firmware;
+import io.github.keddnyo.miyolla.remote.entities.WearDevice;
 import io.github.keddnyo.miyolla.remote.implementations.LanguageImpl;
 import io.github.keddnyo.miyolla.remote.repository.WearDeviceRepository;
 import io.github.keddnyo.miyolla.remote.utils.AsyncTask;
@@ -34,60 +36,54 @@ public class FirmwareRequest extends WearDeviceRepository implements AsyncTask {
     }
 
     @Nullable
-    private Response getFirmware(@NonNull Request requestEntity, @NonNull String language) {
+    private Firmware getFirmware(@NonNull WearDevice wearDeviceEntity, @NonNull String language) throws IOException, JSONException {
 
-        String urlBuilder = "https://" + "api-mifit-us2.huami.com" + "/devices/ALL/hasNewVersion?" + "deviceSource=" + requestEntity.deviceSource + "&" + "productionSource=" + requestEntity.productionSource + "&" + "appVersion=" + requestEntity.application.appVersion + "&" + "firmwareVersion=0&" + "resourceVersion=0&" + "baseResourceVersion=0&" + "gpsVersion=0&" + "fontVersion=0&" + "deviceType=ALL&" + "userId=0&" + "support8Bytes=true&";
+        String urlBuilder = "https://" + "api-mifit-us2.huami.com" + "/devices/ALL/hasNewVersion?" + "deviceSource=" + wearDeviceEntity.deviceSource + "&" + "productionSource=" + wearDeviceEntity.productionSource + "&" + "appVersion=" + wearDeviceEntity.application.appVersion + "&" + "firmwareVersion=0&" + "resourceVersion=0&" + "baseResourceVersion=0&" + "gpsVersion=0&" + "fontVersion=0&" + "deviceType=ALL&" + "userId=0&" + "support8Bytes=true&";
 
-        try {
-            URL url = new URL(urlBuilder);
+        URL url = new URL(urlBuilder);
 
-            URLConnection connection = url.openConnection();
+        URLConnection connection = url.openConnection();
 
-            connection.setRequestProperty("Appplatform", "android_phone");
-            connection.setRequestProperty("Appname", requestEntity.application.appName);
-            connection.setRequestProperty("Apptoken", "0");
-            connection.setRequestProperty("Lang", language);
-            connection.setRequestProperty("Connection", "Keep-Alive");
-            connection.setRequestProperty("Accept-Encoding", "identity");
+        connection.setRequestProperty("Appplatform", "android_phone");
+        connection.setRequestProperty("Appname", wearDeviceEntity.application.appName);
+        connection.setRequestProperty("Apptoken", "0");
+        connection.setRequestProperty("Lang", language);
+        connection.setRequestProperty("Connection", "Keep-Alive");
+        connection.setRequestProperty("Accept-Encoding", "identity");
 
-            connection.setConnectTimeout(5000);
-            connection.setReadTimeout(5000);
+        connection.setConnectTimeout(5000);
+        connection.setReadTimeout(5000);
 
-            InputStream inputStream = connection.getInputStream();
+        InputStream inputStream = connection.getInputStream();
 
-            int buffedSize = 1024;
-            char[] buffer = new char[buffedSize];
-            StringBuilder out = new StringBuilder();
-            Reader in = new InputStreamReader(inputStream);
-            for (int numRead; (numRead = in.read(buffer, 0, buffer.length)) > 0; ) {
-                out.append(buffer, 0, numRead);
-            }
+        int buffedSize = 1024;
+        char[] buffer = new char[buffedSize];
+        StringBuilder out = new StringBuilder();
+        Reader in = new InputStreamReader(inputStream);
+        for (int numRead; (numRead = in.read(buffer, 0, buffer.length)) > 0; ) {
+            out.append(buffer, 0, numRead);
+        }
 
-            String response = out.toString();
+        String response = out.toString();
 
-            JSONObject json = new JSONObject(response);
+        JSONObject json = new JSONObject(response);
 
-            String firmwareVersion = getStringOrNull(json, "firmwareVersion");
-            String firmwareUrl = getStringOrNull(json, "firmwareUrl");
-            String resourceVersion = getStringOrNull(json, "resourceVersion");
-            String resourceUrl = getStringOrNull(json, "resourceUrl");
-            String baseResourceVersion = getStringOrNull(json, "baseResourceVersion");
-            String baseResourceUrl = getStringOrNull(json, "baseResourceUrl");
-            String fontVersion = getStringOrNull(json, "fontVersion");
-            String fontUrl = getStringOrNull(json, "fontUrl");
-            String gpsVersion = getStringOrNull(json, "gpsVersion");
-            String gpsUrl = getStringOrNull(json, "gpsUrl");
-            String changelog = getStringOrNull(json, "changeLog");
+        String firmwareVersion = getStringOrNull(json, "firmwareVersion");
+        String firmwareUrl = getStringOrNull(json, "firmwareUrl");
+        String resourceVersion = getStringOrNull(json, "resourceVersion");
+        String resourceUrl = getStringOrNull(json, "resourceUrl");
+        String baseResourceVersion = getStringOrNull(json, "baseResourceVersion");
+        String baseResourceUrl = getStringOrNull(json, "baseResourceUrl");
+        String fontVersion = getStringOrNull(json, "fontVersion");
+        String fontUrl = getStringOrNull(json, "fontUrl");
+        String gpsVersion = getStringOrNull(json, "gpsVersion");
+        String gpsUrl = getStringOrNull(json, "gpsUrl");
+        String changelog = getStringOrNull(json, "changeLog");
 
-            if (firmwareVersion == null) {
-                return null;
-            } else {
-                return new Response(firmwareVersion, firmwareUrl, resourceVersion, resourceUrl, baseResourceVersion, baseResourceUrl, fontVersion, fontUrl, gpsVersion, gpsUrl, changelog);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (firmwareVersion == null) {
             return null;
+        } else {
+            return new Firmware(firmwareVersion, firmwareUrl, resourceVersion, resourceUrl, baseResourceVersion, baseResourceUrl, fontVersion, fontUrl, gpsVersion, gpsUrl, changelog);
         }
     }
 
@@ -98,21 +94,47 @@ public class FirmwareRequest extends WearDeviceRepository implements AsyncTask {
             languageList.add(LanguageImpl.ENGLISH.code);
             languageList.add(LanguageImpl.CHINESE.code);
 
-            ArrayList<Request> sourceList = initDeviceList();
+            ArrayList<WearDevice> deviceList = initDeviceList();
 
-            progressBar.setMax(sourceList.size());
+            progressBar.setMax(deviceList.size());
+            progressBar.setVisibility(View.VISIBLE);
 
-            for (int i = 0; i < sourceList.size(); i++) {
+            deviceListLoop:
+            for (int i = 0; i < deviceList.size(); i++) {
+                int deviceIndex = i;
+                WearDevice wearDevice = deviceList.get(deviceIndex);
+
                 for (int l = 0; l < languageList.size(); l++) {
-                    Response response = getFirmware(sourceList.get(i), languageList.get(l));
-                    if (response != null) {
-                        int source = i;
+
+                    try {
+                        Firmware firmware = getFirmware(deviceList.get(i), languageList.get(l));
+
+                        if (firmware != null) {
+                            Feed feed = new Feed();
+                            feed.setIcon(wearDevice.deviceIcon);
+                            feed.setTitle(wearDevice.deviceName);
+                            feed.setSubtitle(firmware.firmwareVersion);
+                            feed.setTag(wearDevice.tag);
+                            feed.setHasError(false);
+
+                            handler.post(() -> {
+                                adapter.addItem(feed);
+                                progressBar.setProgress(deviceIndex);
+                                if (deviceIndex + 1 == deviceList.size()) progressBar.setVisibility(View.GONE);
+                            });
+                            break;
+                        }
+
+                    } catch (Exception e) {
+                        Feed feed = new Feed();
+                        feed.setHasError(true);
+
                         handler.post(() -> {
-                            adapter.addItem(new Feed(sourceList.get(source), response));
-                            progressBar.setProgress(source);
-                            if (source + 1 == sourceList.size()) progressBar.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
+                            adapter.addItem(feed);
                         });
-                        break;
+
+                        break deviceListLoop;
                     }
                 }
             }
