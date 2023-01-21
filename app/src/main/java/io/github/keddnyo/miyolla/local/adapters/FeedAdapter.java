@@ -60,7 +60,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
         holder.itemView.setOnClickListener(v -> {
             int count = 0;
-            
+
             if (firmware.firmwareUrl != null) {
                 DownloadRequest.enqueue(context, firmware.firmwareUrl);
                 count++;
