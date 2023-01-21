@@ -11,8 +11,9 @@
         android:id="@+id/feedAdditionalTag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:gravity="end" />
+        android:layout_margin="5dp"
+        android:gravity="end"
+        android:textSize="@dimen/tag" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,8 +30,7 @@
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:layout_margin="@dimen/contentPadding"
-                android:contentDescription="@string/feed_card_icon"
-                android:src="@drawable/zepp_e_circle" />
+                android:contentDescription="@string/feed_card_icon" />
 
             <LinearLayout
                 android:layout_width="match_parent"

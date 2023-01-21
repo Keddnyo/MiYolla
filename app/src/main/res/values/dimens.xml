@@ -3,4 +3,5 @@
     <dimen name="contentPadding">15dp</dimen>
     <dimen name="title">20sp</dimen>
     <dimen name="subtitle">13sp</dimen>
+    <dimen name="tag">11sp</dimen>
 </resources>
