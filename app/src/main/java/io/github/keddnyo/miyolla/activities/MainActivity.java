@@ -1,17 +1,17 @@
 package io.github.keddnyo.miyolla.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.widget.ProgressBar;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import io.github.keddnyo.miyolla.R;
 import io.github.keddnyo.miyolla.local.adapters.FeedAdapter;
 import io.github.keddnyo.miyolla.remote.requests.FirmwareRequest;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     public ProgressBar progressBar;
     public FeedAdapter adapter;
