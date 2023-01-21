@@ -3,16 +3,20 @@ package io.github.keddnyo.miyolla.local.adapters;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import io.github.keddnyo.miyolla.R;
 import io.github.keddnyo.miyolla.local.entities.Feed;
+import io.github.keddnyo.miyolla.remote.entities.Firmware;
+import io.github.keddnyo.miyolla.remote.requests.DownloadRequest;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder> {
     final ArrayList<Feed> feedEntities = new ArrayList<>();
@@ -38,7 +42,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull FeedAdapter.FeedViewHolder holder, int position) {
+        Context context = holder.itemView.getContext();
         Feed feed = feedEntities.get(position);
+        Firmware firmware = feed.getFirmware();
 
         if (feed.getHasError()) {
             holder.feedIcon.setImageResource(R.drawable.unknown);
@@ -51,6 +57,33 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
             holder.subtitle.setText(feed.getSubtitle());
             holder.additionalTag.setText(holder.additionalTag.getContext().getString(feed.getTag()));
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            int count = 0;
+            
+            if (firmware.firmwareUrl != null) {
+                DownloadRequest.enqueue(context, firmware.firmwareUrl);
+                count++;
+            }
+            if (firmware.resourceUrl != null) {
+                DownloadRequest.enqueue(context, firmware.resourceUrl);
+                count++;
+            }
+            if (firmware.baseResourceUrl != null) {
+                DownloadRequest.enqueue(context, firmware.baseResourceUrl);
+                count++;
+            }
+            if (firmware.fontUrl != null) {
+                DownloadRequest.enqueue(context, firmware.fontUrl);
+                count++;
+            }
+            if (firmware.gpsUrl != null) {
+                DownloadRequest.enqueue(context, firmware.gpsUrl);
+                count++;
+            }
+
+            Toast.makeText(context, context.getString(R.string.downloading, count), Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override

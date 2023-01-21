@@ -104,6 +104,7 @@ public class FirmwareRequest extends WearDeviceRepository {
                             feed.setTitle(wearDevice.deviceName);
                             feed.setSubtitle(firmware.firmwareVersion);
                             feed.setTag(wearDevice.tag);
+                            feed.setFirmware(firmware);
                             feed.setHasError(false);
 
                             activity.runOnUiThread(() -> {

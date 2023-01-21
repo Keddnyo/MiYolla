@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MiYolla</string>
+    <string name="app_name" translatable="false">MiYolla</string>
 
     <string name="feed_card_icon">Feed card icon</string>
 
@@ -10,4 +11,6 @@
     <string name="tag_limited" translatable="false">Limited</string>
     <string name="error_has_occurred">Error has occurred</string>
     <string name="error_try_again_later">Please try again later</string>
+
+    <string name="downloading">Downloading %1$d file(-s)…</string>
 </resources>
