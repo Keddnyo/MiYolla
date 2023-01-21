@@ -5,8 +5,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.material.progressindicator.LinearProgressIndicator;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,25 +16,17 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
-import io.github.keddnyo.miyolla.local.adapters.FeedAdapter;
+import io.github.keddnyo.miyolla.activities.MainActivity;
 import io.github.keddnyo.miyolla.local.entities.Feed;
 import io.github.keddnyo.miyolla.remote.entities.Firmware;
 import io.github.keddnyo.miyolla.remote.entities.WearDevice;
-import io.github.keddnyo.miyolla.remote.implementations.LanguageImpl;
+import io.github.keddnyo.miyolla.remote.repository.LanguageRepository;
 import io.github.keddnyo.miyolla.remote.repository.WearDeviceRepository;
-import io.github.keddnyo.miyolla.remote.utils.AsyncTask;
 
-public class FirmwareRequest extends WearDeviceRepository implements AsyncTask {
-    final FeedAdapter adapter;
-    final LinearProgressIndicator progressBar;
-
-    public FirmwareRequest(FeedAdapter adapter, LinearProgressIndicator progressBar) {
-        this.adapter = adapter;
-        this.progressBar = progressBar;
-    }
+public class FirmwareRequest extends WearDeviceRepository {
 
     @Nullable
-    private Firmware getFirmware(@NonNull WearDevice wearDeviceEntity, @NonNull String language) throws IOException, JSONException {
+    private Firmware getFirmware(@NonNull WearDevice wearDeviceEntity, String language) throws IOException, JSONException {
 
         String urlBuilder = "https://" + "api-mifit-us2.huami.com" + "/devices/ALL/hasNewVersion?" + "deviceSource=" + wearDeviceEntity.deviceSource + "&" + "productionSource=" + wearDeviceEntity.productionSource + "&" + "appVersion=" + wearDeviceEntity.application.appVersion + "&" + "firmwareVersion=0&" + "resourceVersion=0&" + "baseResourceVersion=0&" + "gpsVersion=0&" + "fontVersion=0&" + "deviceType=ALL&" + "userId=0&" + "support8Bytes=true&";
 
@@ -87,17 +77,16 @@ public class FirmwareRequest extends WearDeviceRepository implements AsyncTask {
         }
     }
 
-    public void getFirmwareList() {
-        executorService.execute(() -> {
+    public void getFirmwareList(MainActivity activity) {
+        new Thread(() -> {
 
             ArrayList<String> languageList = new ArrayList<>();
-            languageList.add(LanguageImpl.ENGLISH.code);
-            languageList.add(LanguageImpl.CHINESE.code);
+            languageList.add(LanguageRepository.ENGLISH.code);
+            languageList.add(LanguageRepository.CHINESE.code);
 
             ArrayList<WearDevice> deviceList = initDeviceList();
 
-            progressBar.setMax(deviceList.size());
-            progressBar.setVisibility(View.VISIBLE);
+            activity.progressBar.setVisibility(View.VISIBLE);
 
             deviceListLoop:
             for (int i = 0; i < deviceList.size(); i++) {
@@ -117,10 +106,10 @@ public class FirmwareRequest extends WearDeviceRepository implements AsyncTask {
                             feed.setTag(wearDevice.tag);
                             feed.setHasError(false);
 
-                            handler.post(() -> {
-                                adapter.addItem(feed);
-                                progressBar.setProgress(deviceIndex);
-                                if (deviceIndex + 1 == deviceList.size()) progressBar.setVisibility(View.GONE);
+                            activity.runOnUiThread(() -> {
+                                activity.adapter.addItem(feed);
+                                if (deviceIndex + 1 == deviceList.size())
+                                    activity.progressBar.setVisibility(View.GONE);
                             });
                             break;
                         }
@@ -129,19 +118,18 @@ public class FirmwareRequest extends WearDeviceRepository implements AsyncTask {
                         Feed feed = new Feed();
                         feed.setHasError(true);
 
-                        handler.post(() -> {
-                            progressBar.setVisibility(View.GONE);
-                            adapter.addItem(feed);
+                        activity.runOnUiThread(() -> {
+                            activity.progressBar.setVisibility(View.GONE);
+                            activity.adapter.addItem(feed);
                         });
 
                         break deviceListLoop;
                     }
                 }
             }
-        });
+        }).start();
     }
 
-    @Nullable
     private String getStringOrNull(JSONObject jsonObject, String value) {
         try {
             if (jsonObject.has(value)) {
